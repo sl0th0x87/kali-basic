@@ -25,6 +25,8 @@ RUN apt -y update && apt -y dist-upgrade && apt -y install \
 # pentesting tools with apt
 RUN apt -y install \
       amass \
+      dirb \
+      dirbuster \
       exploitdb \
       ffuf \
       john \
@@ -33,6 +35,7 @@ RUN apt -y install \
       nikto \
       nmap \
       seclists \
+      sqlmap \
       subfinder \
       sublist3r \
       wordlists
