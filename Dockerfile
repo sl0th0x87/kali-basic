@@ -20,6 +20,7 @@ RUN apt-get -y update && apt-get -y dist-upgrade && apt-get -y install \
       python3 \
       python3-pip \
       rsync \
+      smbclient \
       tmux \
       vim-nox \
       wget \
@@ -29,9 +30,11 @@ RUN apt-get -y update && apt-get -y dist-upgrade && apt-get -y install \
 # pentesting tools with apt
 RUN apt-get -y install \
       amass \
+      enum4linux \
       exploitdb \
       ffuf \
       john \
+      hydra \
       masscan \
       metasploit-framework \
       netcat-traditional \
