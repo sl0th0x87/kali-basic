@@ -9,6 +9,7 @@ WORKDIR /root
 
 # basic system tools with apt
 RUN apt-get -y update && apt-get -y dist-upgrade && apt-get -y install \
+      acl \
       ca-certificates \
       curl \
       dnsutils \
@@ -59,12 +60,23 @@ RUN go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest && \
     go install github.com/tomnomnom/anew@latest && \
     go install github.com/tomnomnom/gf@latest && \
     go install github.com/tomnomnom/waybackurls@latest && \
-    go install github.com/jaeles-project/jaeles@latest
+    go install github.com/jaeles-project/jaeles@latest && \
+    go install github.com/lc/gau/v2/cmd/gau@latest
 
 # configure application with update-alternatives
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 0
 
 # cleanup
 RUN rm -rf /var/cache/apt/*
+
+# create /pentest dir for work and volume mount
+RUN mkdir /pentest && \
+    addgroup pentest && \
+    chgrp pentest /pentest && \
+    chmod 770 /pentest && \
+    setfacl -Rm g:pentest:rwX /pentest && \
+    setfacl -Rm d:g:pentest:rwX /pentest
+    
+VOLUME /pentest
 
 CMD ["/bin/zsh"]
