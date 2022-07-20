@@ -71,7 +71,7 @@ RUN rm -rf /var/cache/apt/*
 
 # create /pentest dir for work and volume mount
 RUN mkdir /pentest && \
-    addgroup pentest && \
+    addgroup --gid 1100 pentest && \
     chgrp pentest /pentest && \
     chmod 770 /pentest && \
     setfacl -Rm g:pentest:rwX /pentest && \
