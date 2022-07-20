@@ -1,4 +1,4 @@
-ROM kalilinux/kali-rolling:latest
+FROM kalilinux/kali-rolling:latest
 
 LABEL maintainer="sl0th0x87@gmail.com"
 LABEL description="Kali Linux basic image for penetration testing"
