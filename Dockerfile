@@ -20,9 +20,8 @@ RUN apt-get -y update && apt-get -y dist-upgrade && apt-get -y install \
       python3 \
       python3-pip \
       rsync \
-      sudo \
       tmux \
-      vim \
+      vim-nox \
       wget \
       zsh \
       zsh-syntax-highlighting
@@ -33,6 +32,7 @@ RUN apt-get -y install \
       exploitdb \
       ffuf \
       john \
+      masscan \
       metasploit-framework \
       netcat-traditional \
       nikto \
