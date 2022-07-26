@@ -4,6 +4,8 @@ LABEL maintainer="sl0th0x87@gmail.com"
 LABEL description="Kali Linux basic image for penetration testing"
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV PATH=$PATH:/opt/apps/go/bin
+ENV GOPATH=/opt/apps/go
 
 WORKDIR /root
 
@@ -51,6 +53,24 @@ RUN apt-get -y install \
       wordlists \
       wpscan
 
+# create /pentest dir for work and volume mount
+RUN mkdir /pentest && \
+    addgroup --gid 1100 pentest && \
+    chgrp pentest /pentest && \
+    chmod 770 /pentest && \
+    setfacl -Rm g:pentest:rwX /pentest && \
+    setfacl -Rm d:g:pentest:rwX /pentest
+
+# create /opt/apps/go dir for golang apps
+RUN mkdir -p /opt/apps/go && \
+    chmod 770 /opt/apps/go && \
+    chgrp pentest /opt/apps/go && \
+    setfacl -Rm g:pentest:rwX /opt/apps/go && \
+    setfacl -Rm d:g:pentest:rwX /opt/apps/go && \
+    echo 'export PATH=$PATH:/opt/apps/go/bin' > /etc/profile.d/gosettings.sh && \
+    echo 'export GOPATH=/opt/apps/go' >> /etc/profile.d/gosettings.sh && \
+    chmod 755 /etc/profile.d/gosettings.sh
+
 # install golang tools
 RUN go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest && \
     go install github.com/projectdiscovery/httpx/cmd/httpx@latest && \
@@ -68,14 +88,6 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 0
 
 # cleanup
 RUN rm -rf /var/cache/apt/*
-
-# create /pentest dir for work and volume mount
-RUN mkdir /pentest && \
-    addgroup --gid 1100 pentest && \
-    chgrp pentest /pentest && \
-    chmod 770 /pentest && \
-    setfacl -Rm g:pentest:rwX /pentest && \
-    setfacl -Rm d:g:pentest:rwX /pentest
     
 VOLUME /pentest
 
