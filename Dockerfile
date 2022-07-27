@@ -1,7 +1,7 @@
 FROM kalilinux/kali-rolling:latest
 
 LABEL maintainer="sl0th0x87@gmail.com"
-LABEL description="Kali Linux basic image for penetration testing"
+LABEL description="Kali Linux basic image"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PATH=$PATH:/opt/apps/go/bin
@@ -30,29 +30,6 @@ RUN apt-get -y update && apt-get -y dist-upgrade && apt-get -y install \
       zsh \
       zsh-syntax-highlighting
 
-# pentesting tools with apt
-RUN apt-get -y install \
-      amass \
-      enum4linux \
-      exploitdb \
-      ffuf \
-      john \
-      hydra \
-      masscan \
-      metasploit-framework \
-      netcat-traditional \
-      nikto \
-      nmap \
-      proxychains4 \
-      seclists \
-      socat \
-      subfinder \
-      sublist3r \
-      webshells \
-      wfuzz \
-      wordlists \
-      wpscan
-
 # create /pentest dir for work and volume mount
 RUN mkdir /pentest && \
     addgroup --gid 1100 pentest && \
@@ -67,21 +44,8 @@ RUN mkdir -p /opt/apps/go && \
     chgrp pentest /opt/apps/go && \
     setfacl -Rm g:pentest:rwX /opt/apps/go && \
     setfacl -Rm d:g:pentest:rwX /opt/apps/go && \
-    echo 'export PATH=$PATH:/opt/apps/go/bin' > /etc/profile.d/gosettings.sh && \
-    echo 'export GOPATH=/opt/apps/go' >> /etc/profile.d/gosettings.sh && \
-    chmod 755 /etc/profile.d/gosettings.sh
-
-# install golang tools
-RUN go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest && \
-    go install github.com/projectdiscovery/httpx/cmd/httpx@latest && \
-    go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest && \
-    go install github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest && \
-    go install github.com/projectdiscovery/tlsx/cmd/tlsx@latest && \
-    go install github.com/tomnomnom/anew@latest && \
-    go install github.com/tomnomnom/gf@latest && \
-    go install github.com/tomnomnom/waybackurls@latest && \
-    go install github.com/jaeles-project/jaeles@latest && \
-    go install github.com/lc/gau/v2/cmd/gau@latest
+    echo 'export PATH=$PATH:/opt/apps/go/bin' >> /etc/profile && \
+    echo 'export GOPATH=/opt/apps/go' >> /etc/profile
 
 # configure application with update-alternatives
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 0
